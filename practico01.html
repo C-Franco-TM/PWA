@@ -17,6 +17,20 @@
     <p>Contador: {{ contador }}</p>
     <button @click="contador++">Incrementar</button>
     <button @click="contador--">Decrementar</button>
+    <br>
+    <h2>Lista de Tareas</h2>
+    <input type="text" v-model="nuevaTarea" placeholder="Escribe una tarea">
+    <button @click="agregarTarea">Añadir Tarea</button>
+
+    <ul>
+      <li v-for="tarea in tareas" :key="tarea.id">
+        <input type="checkbox" v-model="tarea.completada">
+        {{ tarea.texto }}
+      </li>
+    </ul>
+    <p>Total de Tareas: {{ totalTareas }}</p>
+    <p>Tareas Pendientes: {{ tareasPendientes }}</p>
+
   </div>
 
   <script>
@@ -26,7 +40,34 @@
         nombre: "Ana García",
         edad: 30,
         ciudad: "Tupungato",
+
         contador: 0,
+
+        nuevaTarea: '',
+        tareas: [
+          { id: 1, texto: 'Aprender Vue', completada: false }
+        ]
+      },
+      computed: {
+        totalTareas: function () {
+          return this.tareas.length;
+        },
+        tareasPendientes: function () {
+          return this.tareas.filter(t => !t.completada).length;
+        }
+      },
+      methods: {
+        agregarTarea: function () {
+          if (this.nuevaTarea.trim() !== '') {
+            this.tareas.push({
+              id: Date.now(),
+              texto: this.nuevaTarea,
+              completada: false
+            });
+            this.nuevaTarea = '';
+          }
+        }
+
       }
     });
   </script>
