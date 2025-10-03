@@ -12,6 +12,11 @@
     <p>Edad: {{ edad }}</p>
     <p>Ciudad: {{ ciudad }}</p>
     <p>Hola, mi nombre es {{ nombre }}, tengo {{ edad }} años y vivo en {{ ciudad }}.</p>
+    <br>
+    <h2>Contador</h2>
+    <p>Contador: {{ contador }}</p>
+    <button @click="contador++">Incrementar</button>
+    <button @click="contador--">Decrementar</button>
   </div>
 
   <script>
@@ -21,6 +26,7 @@
         nombre: "Ana García",
         edad: 30,
         ciudad: "Tupungato",
+        contador: 0,
       }
     });
   </script>
