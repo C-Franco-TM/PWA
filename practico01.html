@@ -2,21 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Práctico01 Vue 2</title>
+  <title>Trabajos Prácticos Vue 2</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
+  <h1>Trabajo Práctico 1</h1>
+
   <div id="app">
     <h2>Perfil</h2>
     <p>Nombre: {{ nombre }}</p>
     <p>Edad: {{ edad }}</p>
     <p>Ciudad: {{ ciudad }}</p>
     <p>Hola, mi nombre es {{ nombre }}, tengo {{ edad }} años y vivo en {{ ciudad }}.</p>
+
     <br>
     <h2>Contador</h2>
     <p>Contador: {{ contador }}</p>
     <button @click="contador++">Incrementar</button>
     <button @click="contador--">Decrementar</button>
+
     <br>
     <h2>Lista de Tareas</h2>
     <input type="text" v-model="nuevaTarea" placeholder="Escribe una tarea">
@@ -28,9 +32,9 @@
         {{ tarea.texto }}
       </li>
     </ul>
+
     <p>Total de Tareas: {{ totalTareas }}</p>
     <p>Tareas Pendientes: {{ tareasPendientes }}</p>
-
   </div>
 
   <script>
@@ -48,16 +52,18 @@
           { id: 1, texto: 'Aprender Vue', completada: false }
         ]
       },
+
       computed: {
-        totalTareas: function () {
+        totalTareas() {
           return this.tareas.length;
         },
-        tareasPendientes: function () {
+        tareasPendientes() {
           return this.tareas.filter(t => !t.completada).length;
         }
       },
+
       methods: {
-        agregarTarea: function () {
+        agregarTarea() {
           if (this.nuevaTarea.trim() !== '') {
             this.tareas.push({
               id: Date.now(),
@@ -67,9 +73,82 @@
             this.nuevaTarea = '';
           }
         }
-
       }
     });
   </script>
+
+  <h1>Trabajo Práctico 2</h1>
+  <h2>Paso 1 – Lista de eventos</h2>
+
+  <div id="app2">
+
+    <ul>
+      <li v-for="e in listaeventos" :key="e.id">
+        {{ e.id }} - {{ e.nombre }} - {{ e.timestamp }}
+      </li>
+    </ul>
+
+  </div>
+
+  <script>
+    new Vue({
+      el: "#app2",
+
+      data: {
+        eventosId: 1,
+        listaeventos: []
+      },
+
+      methods: {
+        agregarEvento(nombre) {
+          this.listaeventos.push({
+            id: this.eventosId++,
+            nombre,
+            timestamp: Date.now()
+          });
+        }
+      },
+
+      // Hooks del ciclo de vida SIN RIESGO
+
+      beforeCreate() {
+        this.$options.methods.agregarEvento.call(this, "beforeCreate");
+      //  console.log("beforeCreate")
+      },
+
+      created() {
+        this.agregarEvento("created");
+    //  console.log("beforeMount")
+      },
+
+      beforeMount() {
+        this.agregarEvento("beforeMount");
+    //  console.log("mounted")
+      },
+
+      mounted() {
+        this.agregarEvento("mounted");
+      },
+
+  //  beforeUpdate() {
+  //    console.log("beforeUpdate")
+  //  },
+  //  updated() {
+  //    console.log("updated")
+  //  },
+
+      beforeDestroy() {
+        this.agregarEvento("beforeDestroy");
+    //  console.log("beforeDestroy")
+      },
+
+      destroyed() {
+        this.agregarEvento("destroyed");
+    //  console.log("destroyed")
+      }
+    });
+  </script>
+
 </body>
 </html>
+
