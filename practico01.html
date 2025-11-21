@@ -225,6 +225,70 @@
     });
   </script>
 
+<h2>Paso 3 – Uso de las funciones</h2>
+
+<div id="app4">
+
+  <h3>Lista de Posts</h3>
+  <ul>
+    <li 
+      v-for="p in listaPosts" 
+      :key="p.id" 
+      @click="cargarComentarios(p.id)">
+      <strong>{{ p.id }}</strong> - {{ p.title }}
+    </li>
+  </ul>
+
+  <h3>Comentarios del Post {{ postActual }}</h3>
+  <ul>
+    <li v-for="c in listaComentarios" :key="c.id">
+      <strong>{{ c.email }}</strong>: {{ c.body }}
+    </li>
+  </ul>
+
+</div>
+
+<script>
+new Vue({
+  el: "#app4",
+
+  data: {
+    listaPosts: [],
+    listaComentarios: [],
+    postActual: null
+  },
+
+  methods: {
+
+    async obtenerPost(id) {
+      const api = axios.create({
+        baseURL: "https://jsonplaceholder.typicode.com/"
+      });
+      return (await api.get(`posts/${id}`)).data;
+    },
+
+    async obtenerComments(id) {
+      const api = axios.create({
+        baseURL: "https://jsonplaceholder.typicode.com/"
+      });
+      return (await api.get(`posts/${id}/comments`)).data;
+    },
+
+    async cargarComentarios(id) {
+      this.postActual = id;
+      this.listaComentarios = await this.obtenerComments(id);
+    }
+  },
+
+  async mounted() {
+    for (let i = 1; i <= 10; i++) {
+      const p = await this.obtenerPost(i);
+      this.listaPosts.push(p);
+    }
+  }
+});
+</script>
+
 </body>
 </html>
 
