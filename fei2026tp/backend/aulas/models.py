@@ -38,3 +38,24 @@ class Aula(models.Model):
 
     def __str__(self):
         return self.descripcion
+
+## PUNTO 10
+
+class ReservaAula(models.Model):
+    aula = models.ForeignKey(Aula, on_delete=models.CASCADE)
+    fh_desde = models.DateTimeField()
+    fh_hasta = models.DateTimeField()
+    observacion = models.CharField(max_length=256)
+
+    def __str__(self):
+        return f"{self.aula}: {self.fh_desde} - {self.fh_hasta}"
+
+
+class HorarioMateria(models.Model):
+    materia = models.ForeignKey(Materia, on_delete=models.CASCADE)
+    reserva = models.ForeignKey(ReservaAula, on_delete=models.CASCADE)
+    fh_desde = models.DateTimeField()
+    fh_hasta = models.DateTimeField()
+
+    def __str__(self):
+        return f"{self.materia}: {self.fh_desde} - {self.fh_hasta}"
