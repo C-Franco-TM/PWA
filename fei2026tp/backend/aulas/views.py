@@ -3,10 +3,16 @@ from django.shortcuts import render
 # Create your views here.
 
 from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+)
 
-from .models import Carrera
-from .serializers import CarreraSerializer
+from .models import Carrera, Profesor
+from .serializers import CarreraSerializer, ProfesorSerializer
 
 
 class CarreraMixin(GenericAPIView, ListModelMixin, CreateModelMixin):
@@ -18,3 +24,25 @@ class CarreraMixin(GenericAPIView, ListModelMixin, CreateModelMixin):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class ProfesorMixinDetail(
+    GenericAPIView,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    DestroyModelMixin,
+):
+    queryset = Profesor.objects.all()
+    serializer_class = ProfesorSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
